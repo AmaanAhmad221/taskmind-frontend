@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+}
+
+
+.animate-spin {
+  transition: none;
+}
+
+[data-dnd-kit-sortable] {
+  touch-action: manipulation;
+}
+
+
+.kanban-card {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}

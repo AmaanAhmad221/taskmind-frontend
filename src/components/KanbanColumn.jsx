@@ -68,9 +68,10 @@ const KanbanColumn = ({ status, tasks, onEdit, onDelete, onShare }) => {
 
       {/* Drag & Drop + cards */}
       <div
-        ref={setNodeRef}
-        className="flex-1 p-3 flex flex-col gap-3 overflow-y-auto"
-      >
+  ref={setNodeRef}
+  className="flex-1 p-3 flex flex-col gap-3 overflow-y-auto"
+  style={{ touchAction: 'none' }}
+>
         <SortableContext
           items={tasks.map((t) => t.id)}
           strategy={verticalListSortingStrategy}

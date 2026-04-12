@@ -49,11 +49,11 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
     <div
       ref={setNodeRef}
       style={{
-        transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0.4 : 1,
-        touchAction: 'none',        // ← touch drag fix
-      }}
+  transform: CSS.Transform.toString(transform),
+  transition: isDragging ? 'none' : undefined,
+  opacity: isDragging ? 0.4 : 1,
+  touchAction: 'none',
+}}
       className={`
         group bg-white dark:bg-gray-800 rounded-xl border
         border-gray-200 dark:border-gray-700 p-4

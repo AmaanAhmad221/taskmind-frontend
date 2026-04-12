@@ -36,7 +36,7 @@ const Dashboard = () => {
   const sensors = useSensors(
   useSensor(PointerSensor, {
     activationConstraint: {
-      distance: 3,
+      distance: 5,
     },
   })
 );

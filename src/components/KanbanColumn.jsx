@@ -37,19 +37,17 @@ const columnConfig = {
 
 const KanbanColumn = ({ status, tasks, onEdit, onDelete, onShare }) => {
   const config = columnConfig[status];
-
   const { setNodeRef, isOver } = useDroppable({ id: status });
 
   return (
-    <div className={`
-      flex flex-col rounded-2xl border ${config.border} ${config.bg}
-      min-h-[520px] transition-all duration-200
-      ${isOver
-        ? `ring-2 ${config.ring} scale-[1.01] shadow-lg`
-        : 'shadow-sm'
-      }
-    `}>
-      
+    <div
+      className={`
+        flex flex-col rounded-2xl border ${config.border} ${config.bg}
+        min-h-[520px] transition-colors duration-200
+        ${isOver ? `ring-2 ${config.ring} shadow-lg` : 'shadow-sm'}
+      `}
+    >
+      {/* Header */}
       <div className={`flex items-center justify-between px-4 py-3.5
                        rounded-t-2xl ${config.header}
                        border-b ${config.border}`}>
@@ -66,12 +64,12 @@ const KanbanColumn = ({ status, tasks, onEdit, onDelete, onShare }) => {
         </span>
       </div>
 
-      {/* Drag & Drop + cards */}
+      {/* Drop zone */}
       <div
-  ref={setNodeRef}
-  className="flex-1 p-3 flex flex-col gap-3 overflow-y-auto"
-  style={{ touchAction: 'none' }}
->
+        ref={setNodeRef}
+        style={{ touchAction: 'none' }}
+        className="flex-1 p-3 flex flex-col gap-3"
+      >
         <SortableContext
           items={tasks.map((t) => t.id)}
           strategy={verticalListSortingStrategy}
@@ -87,12 +85,12 @@ const KanbanColumn = ({ status, tasks, onEdit, onDelete, onShare }) => {
           ))}
         </SortableContext>
 
-        {/* Empty state */}
         {tasks.length === 0 && (
-          <div className="flex-1 flex flex-col items-center justify-center
-                          py-16 select-none">
-            <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800
-                            flex items-center justify-center mb-3">
+          <div className="flex-1 flex flex-col items-center
+                          justify-center py-16 select-none">
+            <div className="w-12 h-12 rounded-xl bg-gray-100
+                            dark:bg-gray-800 flex items-center
+                            justify-center mb-3">
               <svg className="w-6 h-6 text-gray-300 dark:text-gray-600"
                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -102,7 +100,8 @@ const KanbanColumn = ({ status, tasks, onEdit, onDelete, onShare }) => {
                      2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </div>
-            <p className="text-xs font-medium text-gray-400 dark:text-gray-600">
+            <p className="text-xs font-medium text-gray-400
+                          dark:text-gray-600">
               No tasks
             </p>
             <p className="text-xs text-gray-300 dark:text-gray-700 mt-0.5">

@@ -49,23 +49,28 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
     <div
       ref={setNodeRef}
       style={{
-  transform: CSS.Transform.toString(transform),
-  transition: isDragging ? 'none' : undefined,
-  opacity: isDragging ? 0.4 : 1,
-  touchAction: 'none',
-}}
+        transform: CSS.Transform.toString(transform),
+        transition: isDragging ? 'none' : transition,
+        opacity: isDragging ? 0.5 : 1,
+        touchAction: 'none',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        cursor: isDragging ? 'grabbing' : 'grab',
+      }}
       className={`
-        group bg-white dark:bg-gray-800 rounded-xl border
+        bg-white dark:bg-gray-800 rounded-xl border
         border-gray-200 dark:border-gray-700 p-4
-        cursor-grab active:cursor-grabbing
-        hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-700
-        transition-all duration-200
-        ${isDragging ? 'shadow-2xl ring-2 ring-indigo-400 rotate-1' : 'shadow-sm'}
+        hover:shadow-md hover:border-indigo-200
+        dark:hover:border-indigo-700
+        ${isDragging
+          ? 'shadow-2xl ring-2 ring-indigo-400 rotate-1 z-50'
+          : 'shadow-sm'
+        }
       `}
       {...attributes}
       {...listeners}
     >
-      {/* Top row — priority + overdue */}
+      {/* Priority + overdue */}
       <div className="flex items-center justify-between mb-2.5">
         <div className="flex items-center gap-1.5">
           <div className={`w-1.5 h-1.5 rounded-full ${priority.dot}`} />
@@ -76,15 +81,15 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
         </div>
         {isOverdue && (
           <span className="text-xs text-red-500 dark:text-red-400
-                           font-semibold animate-pulse">
+                           font-semibold">
             Overdue
           </span>
         )}
       </div>
 
       {/* Title */}
-      <h3 className="font-semibold text-gray-900 dark:text-white text-sm
-                     mb-1.5 line-clamp-2 leading-snug">
+      <h3 className="font-semibold text-gray-900 dark:text-white
+                     text-sm mb-1.5 line-clamp-2 leading-snug">
         {task.title}
       </h3>
 
@@ -116,33 +121,38 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
         </div>
       )}
 
-      {/* Action buttons */}
+      {/* Action buttons — stop propagation so clicks dont trigger drag */}
       <div
         className="flex items-center gap-1 pt-2.5 border-t
                    border-gray-100 dark:border-gray-700"
         onPointerDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
       >
         <button
-          onClick={() => onEdit(task)}
-          className="flex-1 text-xs py-1.5 text-indigo-600 dark:text-indigo-400
-                     hover:bg-indigo-50 dark:hover:bg-indigo-900/20
-                     rounded-lg transition-colors font-medium"
+          onClick={(e) => { e.stopPropagation(); onEdit(task); }}
+          className="flex-1 text-xs py-1.5 text-indigo-600
+                     dark:text-indigo-400 hover:bg-indigo-50
+                     dark:hover:bg-indigo-900/20 rounded-lg
+                     transition-colors font-medium"
         >
           Edit
         </button>
         <button
-          onClick={() => onShare(task)}
-          className="flex-1 text-xs py-1.5 text-gray-500 dark:text-gray-400
-                     hover:bg-gray-50 dark:hover:bg-gray-700/50
-                     rounded-lg transition-colors font-medium"
+          onClick={(e) => { e.stopPropagation(); onShare(task); }}
+          className="flex-1 text-xs py-1.5 text-gray-500
+                     dark:text-gray-400 hover:bg-gray-50
+                     dark:hover:bg-gray-700/50 rounded-lg
+                     transition-colors font-medium"
         >
           Share
         </button>
         <button
-          onClick={() => onDelete(task.id)}
-          className="flex-1 text-xs py-1.5 text-red-500 dark:text-red-400
-                     hover:bg-red-50 dark:hover:bg-red-900/20
-                     rounded-lg transition-colors font-medium"
+          onClick={(e) => { e.stopPropagation(); onDelete(task.id); }}
+          className="flex-1 text-xs py-1.5 text-red-500
+                     dark:text-red-400 hover:bg-red-50
+                     dark:hover:bg-red-900/20 rounded-lg
+                     transition-colors font-medium"
         >
           Delete
         </button>

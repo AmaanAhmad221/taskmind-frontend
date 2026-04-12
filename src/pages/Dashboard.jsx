@@ -3,7 +3,9 @@ import {
   DndContext,
   DragOverlay,
   closestCorners,
-  PointerSensor,       
+  PointerSensor,
+  MouseSensor,
+  TouchSensor,      
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -34,12 +36,18 @@ const Dashboard = () => {
 
   
   const sensors = useSensors(
-  useSensor(PointerSensor, {
-    activationConstraint: {
-      distance: 5,
-    },
-  })
-);
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+      },
+    })
+  );
 
   const fetchTasks = useCallback(async () => {
     setLoading(true);

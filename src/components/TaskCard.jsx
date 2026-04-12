@@ -52,7 +52,7 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.4 : 1,
-        touchAction: 'manipulation',        // ← touch drag fix
+        touchAction: 'none',        // ← touch drag fix
       }}
       className={`
         group bg-white dark:bg-gray-800 rounded-xl border

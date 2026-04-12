@@ -3,9 +3,7 @@ import {
   DndContext,
   DragOverlay,
   closestCorners,
-  PointerSensor,
-  TouchSensor,          
-  MouseSensor,          
+  PointerSensor,       
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -38,7 +36,7 @@ const Dashboard = () => {
   const sensors = useSensors(
   useSensor(PointerSensor, {
     activationConstraint: {
-      distance: 8, // smooth drag
+      distance: 3,
     },
   })
 );

@@ -58,15 +58,15 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
         cursor: isDragging ? 'grabbing' : 'grab',
       }}
       className={`
-        bg-white dark:bg-gray-800 rounded-xl border
-        border-gray-200 dark:border-gray-700 p-4
-        hover:shadow-md hover:border-indigo-200
-        dark:hover:border-indigo-700
-        ${isDragging
-          ? 'shadow-2xl ring-2 ring-indigo-400 rotate-1 z-50'
-          : 'shadow-sm'
-        }
-      `}
+  bg-white dark:bg-gray-800 rounded-xl border
+  border-gray-200 dark:border-gray-700 p-4
+  hover:shadow-md hover:border-indigo-200
+  dark:hover:border-indigo-700 select-none
+  ${isDragging
+    ? 'shadow-2xl ring-2 ring-indigo-400 rotate-1 opacity-50'
+    : 'shadow-sm cursor-grab active:cursor-grabbing'
+  }
+`}
       {...attributes}
       {...listeners}
     >

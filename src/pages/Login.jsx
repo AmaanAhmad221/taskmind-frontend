@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const { login }   = useAuth();
@@ -18,15 +19,16 @@ const Login = () => {
     try {
       const res = await api.post('/api/auth/login', form);
       login(res.data.data);
+      toast.success(`Welcome back, ${res.data.data.name}!`);
       navigate('/dashboard');
     } catch (err) {
-      setError(
-        err.response?.data?.message || 'Login failed. Please try again.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    const msg = err.response?.data?.message || 'Login failed.';
+    setError(msg);
+    toast.error(msg);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const inputClass = `
     w-full px-4 py-3 text-sm rounded-xl border

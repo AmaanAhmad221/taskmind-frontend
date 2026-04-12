@@ -45,6 +45,12 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
     new Date(task.dueDate) < new Date() &&
     task.status !== 'DONE';
 
+    const isDueSoon =
+  task.dueDate &&
+  !isOverdue &&
+  task.status !== 'DONE' &&
+  new Date(task.dueDate) - new Date() < 24 * 60 * 60 * 1000;
+
   return (
     <div
       ref={setNodeRef}
@@ -70,23 +76,52 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
       {...attributes}
       {...listeners}
     >
-      {/* Priority + overdue */}
-      <div className="flex items-center justify-between mb-2.5">
-        <div className="flex items-center gap-1.5">
-          <div className={`w-1.5 h-1.5 rounded-full ${priority.dot}`} />
-          <span className={`text-xs font-medium px-2 py-0.5
-                            rounded-full ${priority.class}`}>
-            {priority.label}
-          </span>
-        </div>
-        {isOverdue && (
-          <span className="text-xs text-red-500 dark:text-red-400
-                           font-semibold">
-            Overdue
-          </span>
-        )}
-      </div>
-
+      {/* Priority + overdue + due soon */}
+<div className="flex items-center justify-between mb-2.5">
+  <div className="flex items-center gap-1.5">
+    <div className={`w-1.5 h-1.5 rounded-full ${priority.dot}`} />
+    <span className={`text-xs font-medium px-2 py-0.5
+                      rounded-full ${priority.class}`}>
+      {priority.label}
+    </span>
+  </div>
+  <div className="flex items-center gap-1">
+    {isDueSoon && !isOverdue && (
+      <span className="inline-flex items-center gap-1 text-xs
+                       text-amber-600 dark:text-amber-400 font-semibold
+                       bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5
+                       rounded-full border border-amber-200
+                       dark:border-amber-800">
+        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd"
+            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58
+               9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53
+               0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0
+               11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0
+               002 0V6a1 1 0 00-1-1z"
+            clipRule="evenodd" />
+        </svg>
+        Due soon
+      </span>
+    )}
+    {isOverdue && (
+      <span className="inline-flex items-center gap-1 text-xs
+                       text-red-500 dark:text-red-400 font-semibold
+                       bg-red-50 dark:bg-red-900/20 px-2 py-0.5
+                       rounded-full border border-red-200
+                       dark:border-red-800">
+        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0
+               00-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0
+               101.415-1.415L11 9.586V6z"
+            clipRule="evenodd" />
+        </svg>
+        Overdue
+      </span>
+    )}
+  </div>
+</div>
       {/* Title */}
       <h3 className="font-semibold text-gray-900 dark:text-white
                      text-sm mb-1.5 line-clamp-2 leading-snug">

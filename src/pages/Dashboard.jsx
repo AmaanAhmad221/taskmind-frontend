@@ -13,6 +13,7 @@ import KanbanColumn from '../components/KanbanColumn';
 import TaskModal from '../components/TaskModal';
 import Loader from '../components/Loader';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 const STATUSES = ['TODO', 'IN_PROGRESS', 'DONE'];
 
@@ -106,12 +107,17 @@ const Dashboard = () => {
       await api.patch(
         `/api/tasks/${dragged.id}/status?status=${newStatus}`
       );
+      toast.success(`Moved to ${
+      newStatus === 'TODO' ? 'To Do' :
+      newStatus === 'IN_PROGRESS' ? 'In Progress' : 'Done'
+    }`);
     } catch {
       setTasks((prev) =>
         prev.map((t) =>
           t.id === dragged.id ? { ...t, status: dragged.status } : t
         )
       );
+      toast.error('Failed to update task status');
     }
   };
 
@@ -126,14 +132,16 @@ const Dashboard = () => {
         setTasks((prev) =>
           prev.map((t) => (t.id === editTask.id ? res.data.data : t))
         );
+        toast.success('Task updated successfully');
       } else {
         const res = await api.post('/api/tasks', formData);
         setTasks((prev) => [res.data.data, ...prev]);
+        toast.success('Task created successfully');
       }
       setModalOpen(false);
       setEditTask(null);
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to save task.');
+      toast.error(err.response?.data?.message || 'Failed to save task.');
     } finally {
       setSubmitting(false);
     }
@@ -144,8 +152,10 @@ const Dashboard = () => {
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
     try {
       await api.delete(`/api/tasks/${taskId}`);
+      toast.success('Task deleted');
     } catch {
       fetchTasks();
+      toast.error('Failed to delete task');
     }
   };
 
@@ -155,6 +165,7 @@ const Dashboard = () => {
     if (shareModal?.shortUrl) {
       navigator.clipboard.writeText(shareModal.shortUrl);
       setCopied(true);
+      toast.success('Link copied to clipboard');
       setTimeout(() => setCopied(false), 2000);
     }
   };

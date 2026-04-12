@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
+import toast from 'react-hot-toast';
 
 const Register = () => {
   const { login }  = useAuth();
@@ -20,13 +21,16 @@ const Register = () => {
     try {
       const res = await api.post('/api/auth/register', form);
       login(res.data.data);
+      toast.success('Account created successfully!');
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const msg = err.response?.data?.message || 'Registration failed.';
+    setError(msg);
+    toast.error(msg);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const inputClass = `
     w-full px-4 py-3 text-sm rounded-xl border

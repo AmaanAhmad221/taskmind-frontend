@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   DndContext,
   DragOverlay,
-  closestCorners,
+  closestCenter,
   MouseSensor,
   TouchSensor,      
   useSensor,
@@ -398,7 +398,7 @@ const Dashboard = () => {
         ) : (
           <DndContext
             sensors={sensors}
-            collisionDetection={closestCorners}
+            collisionDetection={closestCenter}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >

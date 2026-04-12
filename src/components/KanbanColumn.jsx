@@ -66,10 +66,9 @@ const KanbanColumn = ({ status, tasks, onEdit, onDelete, onShare }) => {
 
       {/* Drop zone */}
       <div
-        ref={setNodeRef}
-        style={{ touchAction: 'none' }}
-        className="flex-1 p-3 flex flex-col gap-3"
-      >
+  ref={setNodeRef}
+  className="flex-1 p-3 flex flex-col gap-3 min-h-[400px]"
+>
         <SortableContext
           items={tasks.map((t) => t.id)}
           strategy={verticalListSortingStrategy}

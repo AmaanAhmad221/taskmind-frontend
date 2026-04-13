@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   
   const sensors = useSensors(
-  useSensor(MouseSensor, {
+  useSensor(PointerSensor, {
     activationConstraint: { distance: 5 },
   }),
   useSensor(TouchSensor, {

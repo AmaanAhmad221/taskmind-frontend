@@ -194,7 +194,6 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
       <div
         className="flex items-center gap-1 pt-2.5 border-t
                    border-gray-100 dark:border-gray-700"
-        onPointerDown={(e) => e.stopPropagation()}
         onClick={(e) => e.stopPropagation()} 
       >
         <button

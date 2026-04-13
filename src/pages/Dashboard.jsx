@@ -5,10 +5,10 @@ import {
   pointerWithin,
   rectIntersection,
   PointerSensor,
+  TouchSensor,         
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { restrictToParentElement } from "@dnd-kit/modifiers";
 import api from "../api/axios";
 import KanbanColumn from "../components/KanbanColumn";
 import TaskModal from "../components/TaskModal";
@@ -39,11 +39,16 @@ const Dashboard = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5,
+        distance: 8,
       },
-    })
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 8,
+      },
+    }),
   );
-
   // ── Custom collision — columns take priority over cards ────
   const collisionDetection = useCallback((args) => {
     const pointerCollisions = pointerWithin(args);
@@ -482,10 +487,9 @@ const Dashboard = () => {
             collisionDetection={collisionDetection}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
-            modifiers={[restrictToParentElement]}
           >
             {/* Desktop — 3 columns */}
-            <div className="hidden md:grid md:grid-cols-3 gap-5 relative z-10">
+            <div className="hidden md:grid md:grid-cols-3 gap-5">
               {STATUSES.map((status) => (
                 <KanbanColumn
                   key={status}
@@ -514,7 +518,10 @@ const Dashboard = () => {
             </div>
 
             {/* Drag overlay ghost */}
-            <DragOverlay dropAnimation={null}>
+            <DragOverlay dropAnimation={{
+  duration: 200,
+  easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
+}}>
               {activeTask && (
                 <div
                   className="bg-white dark:bg-gray-800 rounded-xl

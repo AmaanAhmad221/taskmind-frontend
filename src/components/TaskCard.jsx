@@ -60,7 +60,7 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
         transform: CSS.Transform.toString(transform),
         transition: isDragging ? "none" : transition,
         opacity: isDragging ? 0.4 : 1,
-        touchAction: "none",
+        touchAction: "manipulation",
         userSelect: "none",
         WebkitUserSelect: "none",
         position: "relative",
@@ -188,8 +188,7 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
         className="flex items-center gap-1 pt-2.5 border-t
                    border-gray-100 dark:border-gray-700"
         onPointerDown={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
-        onTouchStart={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()} 
       >
         <button
           onClick={(e) => {

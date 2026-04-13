@@ -4,11 +4,11 @@ import {
   DragOverlay,
   pointerWithin,
   rectIntersection,
-  MouseSensor,
-  TouchSensor,
+  PointerSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
 import api from "../api/axios";
 import KanbanColumn from "../components/KanbanColumn";
 import TaskModal from "../components/TaskModal";
@@ -35,14 +35,13 @@ const Dashboard = () => {
   const [copied, setCopied] = useState(false);
   const [activeColumn, setActiveColumn] = useState("TODO");
 
-  // ── Sensors ────────────────────────────────────────────────
+  
   const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: { distance: 3 },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: { delay: 150, tolerance: 5 },
-    }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    })
   );
 
   // ── Custom collision — columns take priority over cards ────
@@ -483,6 +482,7 @@ const Dashboard = () => {
             collisionDetection={collisionDetection}
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
+            modifiers={[restrictToParentElement]}
           >
             {/* Desktop — 3 columns */}
             <div className="hidden md:grid md:grid-cols-3 gap-5">

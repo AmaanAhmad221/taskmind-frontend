@@ -37,30 +37,27 @@ const Dashboard = () => {
 
   
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 200,
-        tolerance: 8,
-      },
-    }),
-  );
-  // ── Custom collision — columns take priority over cards ────
+  useSensor(MouseSensor, {
+    activationConstraint: { distance: 5 },
+  }),
+  useSensor(TouchSensor, {
+    activationConstraint: { delay: 250, tolerance: 5 },
+  })
+);
   const collisionDetection = useCallback((args) => {
-    const pointerCollisions = pointerWithin(args);
-    if (pointerCollisions.length > 0) {
-      const columnHit = pointerCollisions.find((c) =>
-        STATUSES.includes(String(c.id)),
-      );
-      if (columnHit) return [columnHit];
-      return pointerCollisions;
-    }
-    return rectIntersection(args);
-  }, []);
+  // Check columns first using pointer position
+  const pointerHits = pointerWithin(args);
+
+  // Find if pointer is directly over a column
+  const columnHit = pointerHits.find(
+    ({ id }) => STATUSES.includes(String(id))
+  );
+  if (columnHit) return [columnHit];
+
+  // Fall back to rect intersection
+  const rectHits = rectIntersection(args);
+  return rectHits.length ? rectHits : pointerHits;
+}, []);
 
   // ── Fetch tasks ────────────────────────────────────────────
   const fetchTasks = useCallback(async () => {
@@ -100,46 +97,56 @@ const Dashboard = () => {
   };
 
   const handleDragEnd = async ({ active, over }) => {
-    setActiveTask(null);
-    if (!over) return;
+  setActiveTask(null);
+  if (!over) return;
 
-    const dragged = tasks.find((t) => t.id === active.id);
-    if (!dragged) return;
+  const draggedTask = tasks.find((t) => t.id === active.id);
+  if (!draggedTask) return;
 
-    let newStatus = String(over.id);
+  // Determine target status
+  let newStatus = null;
 
-    if (!STATUSES.includes(newStatus)) {
-      const overTask = tasks.find((t) => t.id === over.id);
-      if (overTask) newStatus = overTask.status;
-    }
+  const overId = String(over.id);
 
-    if (newStatus === dragged.status) return;
+  if (STATUSES.includes(overId)) {
+    // Dropped directly on a column
+    newStatus = overId;
+  } else {
+    // Dropped on a card — get that card's column
+    const overTask = tasks.find((t) => t.id === over.id);
+    if (overTask) newStatus = overTask.status;
+  }
 
-    // Optimistic update
-    setTasks((prev) =>
-      prev.map((t) => (t.id === dragged.id ? { ...t, status: newStatus } : t)),
+  if (!newStatus || newStatus === draggedTask.status) return;
+
+  // Optimistic update
+  setTasks((prev) =>
+    prev.map((t) =>
+      t.id === draggedTask.id ? { ...t, status: newStatus } : t
+    )
+  );
+
+  try {
+    await api.patch(
+      `/api/tasks/${draggedTask.id}/status?status=${newStatus}`
     );
-
-    try {
-      await api.patch(`/api/tasks/${dragged.id}/status?status=${newStatus}`);
-      toast.success(
-        `Moved to ${
-          newStatus === "TODO"
-            ? "To Do"
-            : newStatus === "IN_PROGRESS"
-              ? "In Progress"
-              : "Done"
-        }`,
-      );
-    } catch {
-      setTasks((prev) =>
-        prev.map((t) =>
-          t.id === dragged.id ? { ...t, status: dragged.status } : t,
-        ),
-      );
-      toast.error("Failed to update task status");
-    }
-  };
+    toast.success(
+      `Moved to ${
+        newStatus === 'TODO'        ? 'To Do' :
+        newStatus === 'IN_PROGRESS' ? 'In Progress' : 'Done'
+      }`
+    );
+  } catch {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === draggedTask.id
+          ? { ...t, status: draggedTask.status }
+          : t
+      )
+    );
+    toast.error('Failed to update task status');
+  }
+};
 
   // ── CRUD handlers ──────────────────────────────────────────
   const handleCreate = () => {

@@ -23,13 +23,19 @@ const priorityConfig = {
 
 const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
   const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: task.id });
+  attributes,
+  listeners,
+  setNodeRef,
+  transform,
+  transition,
+  isDragging,
+} = useSortable({
+  id: task.id,
+  data: {
+    type: "task",
+    task,
+  },
+});
 
   const priority = priorityConfig[task.priority] || priorityConfig.MEDIUM;
 
@@ -56,6 +62,7 @@ const TaskCard = ({ task, onEdit, onDelete, onShare }) => {
   return (
     <div
       ref={setNodeRef}
+      id={task.id}
       style={{
         transform: CSS.Transform.toString(transform),
         transition: isDragging ? "none" : transition,

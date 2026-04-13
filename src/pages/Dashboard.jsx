@@ -485,7 +485,7 @@ const Dashboard = () => {
             modifiers={[restrictToParentElement]}
           >
             {/* Desktop — 3 columns */}
-            <div className="hidden md:grid md:grid-cols-3 gap-5">
+            <div className="hidden md:grid md:grid-cols-3 gap-5 relative z-10">
               {STATUSES.map((status) => (
                 <KanbanColumn
                   key={status}

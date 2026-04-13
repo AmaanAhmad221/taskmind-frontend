@@ -34,7 +34,13 @@ const columnConfig = {
 
 const KanbanColumn = ({ status, tasks, onEdit, onDelete, onShare }) => {
   const config = columnConfig[status];
-  const { setNodeRef, isOver } = useDroppable({ id: status });
+  const { setNodeRef, isOver } = useDroppable({
+  id: status,
+  data: {
+    type: "column",
+    status,
+  },
+});
 
   return (
     <div

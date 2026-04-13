@@ -1,18 +1,29 @@
-# React + Vite
+# TaskMind — Full Stack Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack task management application built with Spring Boot and React.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
+Frontend: https://taskmind-frontend.vercel.app
+Backend: https://taskmind-backend-production-3c4e.up.railway.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🛠 Tech Stack
+**Backend:** Java 17, Spring Boot, Spring Security, JWT, MySQL, JPA
+**Frontend:** React, Vite, Tailwind CSS, @dnd-kit, Axios
 
-## React Compiler
+## ✨ Features
+- JWT Authentication (register/login/logout)
+- Kanban board with drag and drop
+- Task CRUD with search, filter, sort, pagination
+- Short link sharing (public read-only task view)
+- Mobile responsive
+- Dark/Light theme
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## 🏃 Running locally
+### Backend
+cd taskmind-backend
+mvn spring-boot:run
 
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Frontend  
+cd taskmind-frontend
+npm install
+npm run dev

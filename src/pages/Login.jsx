@@ -49,8 +49,7 @@ const Login = () => {
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
-
-      <div className="w-full max-w-md">
+<div className="w-full max-w-md">
 
   {/* 🔴 Backend Notice */}
   <div className="mb-4 p-3 rounded-xl border border-amber-300 bg-amber-100 text-amber-900 text-sm text-center">

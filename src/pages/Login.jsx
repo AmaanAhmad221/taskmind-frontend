@@ -52,6 +52,37 @@ const Login = () => {
 
       <div className="w-full max-w-md">
 
+  {/* 🔴 Backend Notice */}
+  <div className="mb-4 p-3 rounded-xl border border-amber-300 bg-amber-100 text-amber-900 text-sm text-center">
+    ⚠️ This project uses free hosting, so the backend may be slow or temporarily unavailable.
+
+    <div className="mt-2 flex justify-center gap-2 flex-wrap">
+      <a
+        href="https://github.com/AmaanAhmad221/taskmind-frontend"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline font-semibold hover:text-amber-700"
+      >
+        Frontend Code
+      </a>
+
+      <span>|</span>
+
+      <a
+        href="https://github.com/AmaanAhmad221/taskmind-backend"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline font-semibold hover:text-amber-700"
+      >
+        Backend Code
+      </a>
+    </div>
+  </div>
+
+  {/* Logo + heading */}
+  <div className="text-center mb-8"></div>
+
+
         {/* Logo + heading */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14
